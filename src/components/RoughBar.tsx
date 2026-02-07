@@ -23,26 +23,25 @@ export default function RoughBar({
     useEffect(() => {
         if (svgRef.current && width > 0 && height > 0) {
             const svg = svgRef.current;
-            // Clear previous content
             while (svg.lastChild) {
                 svg.removeChild(svg.lastChild);
             }
 
             const rc = rough.svg(svg);
             const fillColor = isComparing
-                ? "#ef4444" // red-500
+                ? "#ef4444"
                 : isSorted
-                    ? "#22c55e" // green-500
+                    ? "#22c55e"
                     : color;
 
             const node = rc.rectangle(2, 2, width - 4, height - 4, {
                 fill: fillColor,
-                stroke: fillColor, // border color same as fill
-                fillStyle: "hachure", // sketchy fill
-                fillWeight: 3, // thicker scanlines
-                hachureGap: 4, // gap between lines
-                roughness: 2.5, // make it sketchy
-                bowing: 1.5, // curve lines
+                stroke: fillColor,
+                fillStyle: "hachure",
+                fillWeight: 3,
+                hachureGap: 4,
+                roughness: 2.5,
+                bowing: 1.5,
             });
 
             svg.appendChild(node);

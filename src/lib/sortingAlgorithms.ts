@@ -2,8 +2,8 @@ export type SortActionType = "compare" | "swap" | "overwrite";
 
 export interface SortStep {
     type: SortActionType;
-    indices: number[]; // e.g. [i, j] for compare/swap, [k] for overwrite
-    value?: number; // value to overwrite at index k
+    indices: number[];
+    value?: number;
 }
 
 export function* bubbleSort(array: number[]): Generator<SortStep> {
@@ -48,14 +48,14 @@ export function* insertionSort(array: number[]): Generator<SortStep> {
     for (let i = 1; i < n; i++) {
         let key = arr[i];
         let j = i - 1;
-        yield { type: "compare", indices: [j, i] }; // compare key with previous
+        yield { type: "compare", indices: [j, i] };
         while (j >= 0 && arr[j] > key) {
-            yield { type: "compare", indices: [j, j + 1] }; // visualize comparison
-            yield { type: "overwrite", indices: [j + 1], value: arr[j] }; // shift
+            yield { type: "compare", indices: [j, j + 1] };
+            yield { type: "overwrite", indices: [j + 1], value: arr[j] };
             arr[j + 1] = arr[j];
             j = j - 1;
         }
-        yield { type: "overwrite", indices: [j + 1], value: key }; // insert key
+        yield { type: "overwrite", indices: [j + 1], value: key };
         arr[j + 1] = key;
     }
 }
@@ -96,7 +96,7 @@ function* merge(
         k = l;
 
     while (i < n1 && j < n2) {
-        yield { type: "compare", indices: [l + i, m + 1 + j] }; // compare from original positions roughly
+        yield { type: "compare", indices: [l + i, m + 1 + j] };
         if (L[i] <= R[j]) {
             yield { type: "overwrite", indices: [k], value: L[i] };
             arr[k] = L[i];
@@ -145,8 +145,8 @@ function* partition(
     arr: number[],
     low: number,
     high: number
-): Generator<any> { // SortStep + return value
-    const pivot = arr[high]; // pivot
+): Generator<any> {
+    const pivot = arr[high];
     let i = low - 1;
 
     for (let j = low; j <= high - 1; j++) {

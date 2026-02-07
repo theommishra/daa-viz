@@ -39,10 +39,9 @@ export default function SortingVisualizer() {
     const [highlightIndices, setHighlightIndices] = useState<number[]>([]);
     const [stats, setStats] = useState({ comparisons: 0, swaps: 0, steps: 0 });
 
-    // Refs for loop control
     const sortingRef = useRef<boolean>(false);
     const speedRef = useRef(speed);
-    const itemsRef = useRef(items); // Keep track of current items for the generator
+    const itemsRef = useRef(items);
 
     useEffect(() => {
         speedRef.current = speed;
@@ -51,7 +50,7 @@ export default function SortingVisualizer() {
     useEffect(() => {
         generateArray();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [arraySize]); // Re-generate when size changes
+    }, [arraySize]);
 
     const generateArray = useCallback(() => {
         if (sortingRef.current) return;
@@ -69,14 +68,13 @@ export default function SortingVisualizer() {
     const handleStart = async () => {
         if (isSorted) {
             generateArray();
-            await new Promise(r => setTimeout(r, 100)); // Small delay for state update
+            await new Promise(r => setTimeout(r, 100));
         }
 
         setIsSorting(true);
         sortingRef.current = true;
         setStats({ comparisons: 0, swaps: 0, steps: 0 });
 
-        // Get values
         const values = itemsRef.current.map(item => item.value);
 
         let generator: Generator<SortStep>;
@@ -84,7 +82,7 @@ export default function SortingVisualizer() {
             case "bubble": generator = bubbleSort(values); break;
             case "selection": generator = selectionSort(values); break;
             case "insertion": generator = insertionSort(values); break;
-            case "merge": generator = mergeSort(values); break; // Merge sort is complex with overwrite
+            case "merge": generator = mergeSort(values); break;
             case "quick": generator = quickSort(values); break;
             default: generator = bubbleSort(values);
         }
@@ -139,18 +137,15 @@ export default function SortingVisualizer() {
     };
 
     const getBarColor = (value: number, isComparing: boolean, isSorted: boolean) => {
-        if (isComparing) return "#f472b6"; // pink-400
-        if (isSorted) return "#4ade80"; // green-400
-        // Hue based on value (0-100) -> 200-280 (Blue to Purple range)
+        if (isComparing) return "#f472b6";
+        if (isSorted) return "#4ade80";
         const hue = 210 + (value / 100) * 60;
         return `hsl(${hue}, 90%, 60%)`;
     };
 
     return (
         <div className="w-full max-w-6xl mx-auto p-6 flex flex-col gap-8">
-            {/* Header & Controls */}
             <div className="flex flex-col lg:flex-row items-center justify-between gap-6 bg-gray-900/40 p-8 rounded-3xl border border-white/10 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-                {/* Decorative Glow */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-70" />
 
                 <div className="flex flex-col gap-2 z-10">
@@ -228,9 +223,7 @@ export default function SortingVisualizer() {
                 </div>
             </div>
 
-            {/* Visualization Area */}
             <div className="relative h-[600px] w-full bg-gradient-to-b from-gray-900/80 to-black/80 rounded-3xl border border-white/5 p-8 lg:p-12 flex items-end justify-center gap-2 lg:gap-3 overflow-hidden shadow-2xl backdrop-blur-md">
-                {/* Background Grid */}
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
                     style={{
                         backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
@@ -238,7 +231,6 @@ export default function SortingVisualizer() {
                     }}
                 />
 
-                {/* Ambient glow */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
 
                 <AnimatePresence>
@@ -259,7 +251,6 @@ export default function SortingVisualizer() {
                                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
                                         className="mb-4 absolute bottom-[100%]"
                                     >
-                                        {/* Dynamic Arrow Color */}
                                         <RoughArrow color={items[idx] && items[idx].value > 50 ? "#f472b6" : "#60a5fa"} width={28} height={36} />
                                     </motion.div>
                                 )}
@@ -281,7 +272,8 @@ export default function SortingVisualizer() {
                 </AnimatePresence>
             </div>
 
-            {/* Info / Legend */}
+
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-6 bg-gray-900/40 rounded-3xl border border-white/10 backdrop-blur-md">
                     <h3 className="text-lg font-bold mb-4 text-gray-200 flex items-center gap-2">

@@ -25,8 +25,6 @@ export default function RoughArrow({
 
             const rc = rough.svg(svg);
 
-            // Arrow Line
-            // Centered X
             const x = width / 2;
             const lineStart = 0;
             const lineEnd = height - 10;
@@ -38,7 +36,6 @@ export default function RoughArrow({
                 bowing: 1.5
             });
 
-            // Arrow Head
             const head = rc.polygon([
                 [x - 8, lineEnd - 2],
                 [x, height],
@@ -46,7 +43,7 @@ export default function RoughArrow({
             ], {
                 fill: color,
                 stroke: color,
-                fillStyle: 'solid', // solid fill for better visibility
+                fillStyle: 'solid',
                 roughness: 2,
                 bowing: 1.5
             });
